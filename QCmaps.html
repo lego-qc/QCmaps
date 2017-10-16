@@ -44,12 +44,23 @@
 		//duplakatt törli
        	markers.push(marker);
 		marker.addListener('dblclick',function(){
+			marker.setVisible(false);
+			tombRendez();
 			marker.setMap(null);
 		});
      }
-		
-	
-		
+	 function tombRendez()	{
+	 	var i = 0;
+	 	for(i = 0; i < markers.lenght; i++) {
+			if(!i.getVisible()) {
+				i = null;
+				break;
+			}
+		}
+		for(var j = i; j < markers.lenght - 1; j++) {
+			j = j + 1;
+		}
+	 }	
     </script>
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAnD0cYl_LFXsQOrjMj_8dkOCbW1cUNldE&callback=initMap"

@@ -22,25 +22,33 @@
 <body>
 <div id="map"></div>
     <script>
-      	function initMap() {
-			var myLatlng = {lat: 47.473015, lng: 19.053245};
-	
-			var map = new google.maps.Map(document.getElementById('map'), {
-			  zoom: 16,
-			  center: myLatlng
-			});
-			//magic, csinál kattintásra jelöloket
-			google.maps.event.addListener(map, 'click', function(event) {
-			placeMarker(event.latLng);
-				function placeMarker(location) {
-					var marker = new google.maps.Marker({
-						position: location, 
-						map: map
-					});
-				}
-			});
+	var map;
+	var markers = [];
+    function initMap() {
+		var myLatlng = {lat: 47.473015, lng: 19.053245};
+		map = new google.maps.Map(document.getElementById('map'), {
+		  zoom: 16,
+		  center: myLatlng
+		});
+		//magic, csinál kattintásra jelöloket
+		google.maps.event.addListener(map, 'click', function(event) {
+			addMarker(event.latLng);
+		});
+	}
+	function addMarker(location) {
+		var marker = new google.maps.Marker({
+		  position: location,
+		  map: map,
+		  draggable: true
+       	});
+		//duplakatt törli
+       	markers.push(marker);
+		marker.addListener('dblclick',function(){
+			marker.setMap(null);
+		});
+     }
 		
-		}
+	
 		
     </script>
 

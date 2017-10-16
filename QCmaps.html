@@ -2,12 +2,24 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Untitled Document</title>
+<title>QCmaps</title>
 <style>
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
+	  #border{
+	  	height: 1%;
+	  	width: 100%;
+		margin: 0;
+        padding: 0;
+		}
+	  #text {
+	  	height: 3%;
+	  	width: 100%;
+		margin: 0;
+        padding: 0;
+	  }
       #map {
-        height: 100%;
+        height: 94%;
       }
       /* Optional: Makes the sample page fill the window. */
       html, body {
@@ -20,10 +32,22 @@
 </head>
 
 <body>
-<div id="map"></div>
-    <script>
+<div id = "border">
+</div>
+<div id = "text" align="center" >
+	 <label name="tbox1" id = "alabel">
+szoveg lol
+	</label> 
+</div>
+<div id="map">
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+</div>
+    <p>
+      <script>
 	var map;
 	var markers = [];
+	var ezalabel = document.getElementById("alabel"); 
     function initMap() {
 		var myLatlng = {lat: 47.473015, lng: 19.053245};
 		map = new google.maps.Map(document.getElementById('map'), {
@@ -39,11 +63,13 @@
 		var marker = new google.maps.Marker({
 		  position: location,
 		  map: map,
-		  draggable: true
+		  draggable: true,
+		  label: markers.length.toString()
        	});
 		//duplakatt törli
        	markers.push(marker);
-		marker.addListener('dblclick',function(){
+		ezalabel.innerHTML = markers[0].getPosition().lat();
+		marker.addListener('click',function(){
 			marker.setVisible(false);
 			tombRendez();
 			marker.setMap(null);
@@ -51,20 +77,26 @@
      }
 	 function tombRendez()	{
 	 	var i = 0;
-	 	for(i = 0; i < markers.lenght; i++) {
-			if(!i.getVisible()) {
-				i = null;
+		var temp = [];
+	 	for(i = 0; i < markers.length; i++) {
+			temp[i] = markers[i];
+			if(!markers[i].getVisible()) {
+				markers[i] = null;
 				break;
 			}
 		}
-		for(var j = i; j < markers.lenght - 1; j++) {
-			j = j + 1;
+		for(var j = i; j < markers.length - 1; j++) {
+			temp[j] = markers[j + 1];
+			temp[j].label = temp[j].label;
 		}
+		if(temp[0] == null)markers = [];
+		else markers = temp;
 	 }	
     </script>
-
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAnD0cYl_LFXsQOrjMj_8dkOCbW1cUNldE&callback=initMap"
+</p>
+    <p>
+      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAnD0cYl_LFXsQOrjMj_8dkOCbW1cUNldE&callback=initMap"
     async defer></script>
-
+        </p>
 </body>
 </html>

@@ -47,6 +47,7 @@ szoveg lol
       <script>
 	var map;
 	var markers = [];
+	var flightPath;
 	var ezalabel = document.getElementById("alabel"); 
     function initMap() {
 		var myLatlng = {lat: 47.473015, lng: 19.053245};
@@ -66,31 +67,51 @@ szoveg lol
 		  draggable: true,
 		  label: markers.length.toString()
        	});
-		//duplakatt törli
+		///duplakatt törli
        	markers.push(marker);
+		/*flightPath = new google.maps.Polyline({
+          path: markers,
+          geodesic: true,
+          strokeColor: '#FF0000',
+          strokeOpacity: 1.0,
+          strokeWeight: 2
+        });*/
+
 		ezalabel.innerHTML = markers[0].getPosition().lat();
 		marker.addListener('click',function(){
 			marker.setVisible(false);
 			tombRendez();
 			marker.setMap(null);
 		});
+		marker.addListener('dragend',function(){
+			marker.setMap(map);
+		});
      }
 	 function tombRendez()	{
 	 	var i = 0;
 		var temp = [];
 	 	for(i = 0; i < markers.length; i++) {
-			temp[i] = markers[i];
 			if(!markers[i].getVisible()) {
 				markers[i] = null;
 				break;
 			}
+			temp[i] = markers[i];
+			temp[i].setMap(map);
 		}
-		for(var j = i; j < markers.length - 1; j++) {
+		for(var j = i; j < (markers.length - 1); j++) {
 			temp[j] = markers[j + 1];
-			temp[j].label = temp[j].label;
+			temp[j].label = (temp[j].label - 1);
+			temp[j].setMap(map);
 		}
 		if(temp[0] == null)markers = [];
 		else markers = temp;
+		/*flightPath = new google.maps.Polyline({
+			path: markers,
+			geodesic: true,
+			strokeColor: '#FF0000',
+			strokeOpacity: 1.0,
+			strokeWeight: 2
+			});*/
 	 }	
     </script>
 </p>
